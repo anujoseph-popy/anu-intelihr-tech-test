@@ -14,7 +14,6 @@
 // Then I confirm, by selecting the 'Delete' option
 // Verify out of the 2 skills created, only the first skill is listed
 
-
 describe('An authenticated Admin user navigating to Dashboard', () => {
     beforeEach(() => {
         cy.visit('https://qa-tech-test-anu-demo.intellihr.net/auth/login')
@@ -43,8 +42,11 @@ describe('An authenticated Admin user navigating to Dashboard', () => {
             .get('.Select-menu-outer').children('div').contains('Accounting').click()
             .get('#description').type('Skill 1 Description')
             .get('button.primary').contains('Save').click()
+            .wait(2000)
             // check if first skill is the newly created skill
-            .get("div[data-component-type=card]").first().contains('Skill 1')
+            .get("#filterControllerSearchInput").type('Skill')
+            .wait(4000)
+            .get("div[data-component-type=card]").contains('Skill 1')
 
         // again creating new skill
         cy.get('span.primary').contains('Create Skill').parent('a').click()
@@ -54,12 +56,18 @@ describe('An authenticated Admin user navigating to Dashboard', () => {
             .get('.Select-menu-outer').children('div').contains('Accounting').click()
             .get('#description').type('Skill 2 Description')
             .get('button.primary').contains('Save').click()
-            // check if first skill is the newly created skill
-            .get("div[data-component-type=card]").first().contains('Skill 2')
+            .wait(2000)
+            // check if newly created skill is in list
+            .get("#filterControllerSearchInput").clear({force:true}).type("Skill")
+            .wait(4000)
+            .get("div[data-component-type=card]").contains('Skill 2')
 
             // deleting the second skill
-        cy.children('button[aria-haspopup=true]').click()
-            .get('li[role=meuitem]').contains('Delete').should('be.visible').click()
+        cy.get("div[data-component-type=card]").contains('Skill 2').parent("div").parent("div").parent("div").parent('div').children('button[aria-haspopup=true]').click()
+            .get('li[role=menuitem]').contains('Delete').should('be.visible').click()
+            .wait(1000)
+            .get('button.alert').contains('Delete').should('be.visible').click()
+            .wait(3000)
             .get("div[data-component-type=card]").first().should('not.contain','Skill 2')
 
     })
