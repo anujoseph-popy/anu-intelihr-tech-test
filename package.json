@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "cypress": "^10.0.2",
+    "cypress-dotenv": "^2.0.0",
+    "dotenv": "^16.0.1"
+  },
+  "dependencies": {
+    "nvm": "^0.0.4"
+  },
+  "scripts": {
+    "cypress open": "./node_modules/.bin/cypress open"
+  }
+}
